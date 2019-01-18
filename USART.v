@@ -1,7 +1,7 @@
 module USART # (
     parameter CLK_FREQ = 100000000, // 100MHz
     parameter BAUD_RATE = 115200, // 115200
-    parameter CLKS_TO_SEND = CLK_FREQ / BAUD_RATE; // 1비트를 전송하기 위해 기다려야 하는 클럭 수
+    parameter CLKS_TO_SEND = CLK_FREQ / BAUD_RATE, // 1비트를 전송하기 위해 기다려야 하는 클럭 수
 	parameter CLKS_TO_RECV = CLKS_TO_SEND / 2,
 	parameter DATA_BIT = 8,
 	parameter NUM_OF_BUFS = 15
@@ -36,7 +36,8 @@ module USART # (
 			tx_bit = 1; // set idle
 			data_buffer_index_tx = 0; // data index
 		end
-		else begin
+		else
+		begin
 			// transmit data until the index became the same with the base index
 			if (data_buffer_index_tx != data_buffer_index_rx) // rx index는 다 받고 나면 +1돼서 빈 버퍼를 가리킬 거고, tx index는 rx index보다 낮으면 지금거를 보내고 위로 올라갈 거임.
 			begin

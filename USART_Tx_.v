@@ -1,17 +1,64 @@
-`ifndef __USART_TX_V__ // 미완성
-`define __USART_TX_V__
-
 module USART_Tx # (
     parameter CLK_FREQ = 100000000, // 100MHz
     parameter BAUD_RATE = 115200, // 115200
 	parameter DATA_BIT = 8,
 	parameter NUM_OF_BUFS = 16
 	)	(
-	input clk,
-	input reset,
-	output tx,
-	input [7:0] data
-	)
+	);
+
+    reg clk;
+    reg reset;
+    wire tx;
+    reg [7:0] data;
+
+    initial
+    begin
+        clk <= 1'b0;
+        reset <= 1'b0;
+        forever
+        begin
+            #1 clk = ~clk;
+        end
+    end
+
+    initial
+    begin
+        data <= 8'h3F;
+        #1000; $finish;
+    end
+
+    always @ (*)
+    begin
+        $monitor("tx = %b", tx);
+    end
+
+    integer i;
+    always @ (*)
+    begin
+        if (i >= 800 && i <= 900)
+        $monitor("tx_clk_count = %d", tx_clk_count);
+    end
+    always @ (*)
+    begin
+        if (i >= 800 && i <= 900)
+        $monitor("tx_bit_count = %d", tx_bit_count);
+    end
+    always @ (*)
+    begin
+        if (i >= 800 && i <= 900)
+        $monitor("tx_data = %d", tx_data);
+    end
+    always @ (*)
+    begin
+        if (i >= 800 && i <= 900)
+        $monitor("tx_bit = %b", tx_bit);
+    end
+    always @ (posedge clk)
+    begin
+        if (i == 868)
+            i = 0;
+        i = i + 1;
+    end
 
     localparam CLKS_TO_SEND = CLK_FREQ / BAUD_RATE; // 1비트를 전송하기 위해 기다려야 하는 클럭 수
 
@@ -24,10 +71,10 @@ module USART_Tx # (
 	
 	initial
 	begin
-		tx_clk_count <= 0;
-		tx_bit_count <= 0;
-		tx_bit <= 1'b1;
-		tx_data <= 0;
+		tx_clk_count = 0;
+		tx_bit_count = 0;
+		tx_bit = 1'b1;
+		tx_data = 0;
 	end
 
 	// Transmitter Process at every rising edge of the clock
@@ -35,10 +82,10 @@ module USART_Tx # (
 	begin
 		if (reset)
 		begin
-			tx_clk_count <= 0;
-			tx_bit_count <= 0;
-			tx_bit <= 1'b1; // set idle
-			tx_data <= 0;
+			tx_clk_count = 0;
+			tx_bit_count = 0;
+			tx_bit = 1'b1; // set idle
+			tx_data = 0;
 		end
 		else begin
 			// transmit data until the index became the same with the base index
@@ -73,5 +120,3 @@ module USART_Tx # (
 	end
 
 endmodule
-
-`endif /*__USART_TX_V__*/
