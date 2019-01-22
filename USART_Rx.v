@@ -2,10 +2,10 @@
 `define __USART_RX_V__
 
 module USART_Rx # (
-    parameter CLK_FREQ = 100000000,
-    parameter BAUD_RATE = 115200,
+	parameter CLK_FREQ = 100000000,
+	parameter BAUD_RATE = 115200,
 	parameter DATA_BIT = 8
-    )   (
+	)   (
 	input clk,
 	input reset,
 	input rx,

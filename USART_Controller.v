@@ -9,14 +9,16 @@ module USART_Controller # (
 	parameter BAUD_RATE = 115200,
 	parameter DATA_BIT = 8
 	)  (
-    input clk,
+	input clk,
 	input reset,
 	output tx,
 	input rx
-    );
+	);
 
-	wire [7:0] _data;
-	wire enable;
+	wire [7:0] tx_data;
+	wire [7:0] rx_data;
+	wire tx_enable;
+	wire rx_enable;
 
 	USART_Tx # (
 		.CLK_FREQ(CLK_FREQ),
@@ -26,8 +28,8 @@ module USART_Controller # (
 		.clk(clk),
 		.reset(reset),
 		.tx(tx),
-		._data(_data),
-		.enable(enable)
+		._data(tx_data),
+		.enable(tx_enable)
 	);
 
 	USART_Rx # (
@@ -38,9 +40,13 @@ module USART_Controller # (
 		.clk(clk),
 		.reset(reset),
 		.rx(rx),
-		._data(_data),
-		.enable(enable)
+		._data(rx_data),
+		.enable(rx_enable)
 	);
+
+	// setting for loopback
+	assign tx_data = rx_data;
+	assign tx_enable = rx_enable;
 
 endmodule
 

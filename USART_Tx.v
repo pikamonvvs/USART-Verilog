@@ -2,14 +2,14 @@
 `define __USART_TX_V__
 
 module USART_Controller_tb (
-    );
-    reg clk;
-    reg reset;
-    wire tx;
-    reg rx;
-    
-    USART_Controller unit1(clk, reset, tx, rx);
-    
+	);
+	reg clk;
+	reg reset;
+	wire tx;
+	reg rx;
+
+	USART_Controller unit1(clk, reset, tx, rx);
+
 	initial
 	begin
 		clk <= 1'b0;
@@ -45,11 +45,11 @@ module USART_Controller # (
 	parameter BAUD_RATE = 115200,
 	parameter DATA_BIT = 8
 	)  (
-    input clk,
+	input clk,
 	input reset,
 	output tx,
 	input rx
-    );
+	);
 
 	wire [7:0] _data;
 	wire enable;
@@ -81,10 +81,10 @@ module USART_Controller # (
 endmodule
 
 module USART_Tx # (
-    parameter CLK_FREQ = 100000000,
-    parameter BAUD_RATE = 115200,
+	parameter CLK_FREQ = 100000000,
+	parameter BAUD_RATE = 115200,
 	parameter DATA_BIT = 8
-    )   (
+	)   (
 	input clk,
 	input reset,
 	output tx,
@@ -146,7 +146,7 @@ module USART_Tx # (
 					begin
 						tx_bit = 1;
 						tx_bit_count = 0;
-    					tx_en = tx_en + 1;
+						tx_en = tx_en + 1;
 					end
 					tx_clk_count = 0;
 				end
@@ -166,10 +166,10 @@ endmodule
 
 
 module USART_Rx # (
-    parameter CLK_FREQ = 100000000,
-    parameter BAUD_RATE = 115200,
+	parameter CLK_FREQ = 100000000,
+	parameter BAUD_RATE = 115200,
 	parameter DATA_BIT = 8
-    )   (
+	)   (
 	input clk,
 	input reset,
 	input rx,

@@ -1,14 +1,14 @@
 `include "USART_Controller.v"
 
 module USART_Controller_tb (
-    );
-    reg clk;
-    reg reset;
-    wire tx;
-    reg rx;
-    
-    USART_Controller unit1(clk, reset, tx, rx);
-    
+	);
+	reg clk;
+	reg reset;
+	wire tx;
+	reg rx;
+
+	USART_Controller unit1(clk, reset, tx, rx);
+
 	initial
 	begin
 		clk <= 1'b0;
