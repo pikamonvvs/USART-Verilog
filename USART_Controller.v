@@ -12,13 +12,17 @@ module USART_Controller # (
 	input clk,
 	input reset,
 	output tx,
-	input rx
+	input rx,
+	output tx_response,
+	output rx_response
 	);
 
 	wire [7:0] tx_data;
 	wire [7:0] rx_data;
 	wire tx_enable;
 	wire rx_enable;
+//	wire tx_response;
+//	wire rx_response;
 
 	USART_Tx # (
 		.CLK_FREQ(CLK_FREQ),
@@ -29,7 +33,8 @@ module USART_Controller # (
 		.reset(reset),
 		.tx(tx),
 		._data(tx_data),
-		.enable(tx_enable)
+		.enable(tx_enable),
+		.response(tx_response)
 	);
 
 	USART_Rx # (
@@ -41,7 +46,8 @@ module USART_Controller # (
 		.reset(reset),
 		.rx(rx),
 		._data(rx_data),
-		.enable(rx_enable)
+		.enable(rx_enable),
+		.response(rx_response)
 	);
 
 	// setting for loopback

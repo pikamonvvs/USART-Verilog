@@ -10,7 +10,8 @@ module USART_Rx # (
 	input reset,
 	input rx,
 	output [7:0] _data,
-	output enable
+	output enable,
+	output reg response
 	);
 
 	localparam CLKS_FOR_SEND = CLK_FREQ / BAUD_RATE;
@@ -29,8 +30,9 @@ module USART_Rx # (
 		rx_data <= 0;
 		rx_bit_count <= 0;
 		rx_clk_count <= 0;
-		rx_state <= 1'b0;
-		rx_en <= 1'b0;
+		rx_state <= 0;
+		rx_en <= 0;
+		response <= 0;
 	end
 
 	always @ (posedge clk)
@@ -40,7 +42,7 @@ module USART_Rx # (
 			rx_data = 0;
 			rx_bit_count = 0;
 			rx_clk_count = 0;
-			rx_state = 1'b0;
+			rx_state = 0;
 		end
 		else
 		begin
@@ -70,16 +72,25 @@ module USART_Rx # (
 					rx_bit_count = 0;
 					rx_en = rx_en + 1;
 					data = rx_data;
+					response = 1;
 				end
 				else if(rx_bit_count > DATA_BIT && rx_clk_count == CLKS_FOR_SEND && rx != 1)
 				begin
 					rx_state = 0;
 					rx_clk_count = 0;
 					rx_bit_count = 0;
-					rx_data = 8'b00000000;
+					rx_data = 0;
 				end
 				rx_clk_count = rx_clk_count + 1;
 			end
+		end
+	end
+
+	always @ (posedge clk)
+	begin
+		if (response)
+		begin
+			response = 0;
 		end
 	end
 
