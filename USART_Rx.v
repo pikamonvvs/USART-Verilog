@@ -4,12 +4,13 @@
 module USART_Rx # (
 	parameter CLK_FREQ = 100000000,
 	parameter BAUD_RATE = 115200,
-	parameter DATA_BIT = 8
+	parameter DATA_BITS = 8
+	parameter STOP_BITS = 1
 	)   (
 	input clk,
 	input reset,
 	input rx,
-	output [7:0] _data,
+	output [DATA_BITS-1:0] _data,
 	output enable,
 	output reg response
 	);
@@ -17,10 +18,10 @@ module USART_Rx # (
 	localparam CLKS_FOR_SEND = CLK_FREQ / BAUD_RATE;
 	localparam CLKS_FOR_RECV = CLKS_FOR_SEND / 2;
 
-	reg [7:0] data;
-	reg [7:0] rx_data;
-	reg [3:0] rx_bit_count;
-	reg [11:0] rx_clk_count;
+	reg [DATA_BITS-1:0] data;
+	reg [DATA_BITS-1:0] rx_data;
+	reg [$clog2(DATA_BITS):0] rx_bit_count;
+	reg [$clog2(CLKS_FOR_SEND)-1:0] rx_clk_count;
 	reg rx_state;
 	reg rx_en;
 
@@ -59,13 +60,13 @@ module USART_Rx # (
 					rx_bit_count = 1;
 					rx_clk_count = 0;
 				end
-				else if(1 <= rx_bit_count && rx_bit_count <= DATA_BIT && rx_clk_count == CLKS_FOR_SEND)
+				else if(1 <= rx_bit_count && rx_bit_count <= DATA_BITS && rx_clk_count == CLKS_FOR_SEND)
 				begin
 					rx_data[rx_bit_count-1] = rx;
 					rx_bit_count = rx_bit_count + 1;
 					rx_clk_count = 0;
 				end
-				else if(rx_bit_count > DATA_BIT && rx_clk_count == CLKS_FOR_SEND && rx == 1)
+				else if(rx_bit_count > DATA_BITS && rx_clk_count == CLKS_FOR_SEND && rx == 1)
 				begin
 					rx_state = 0;
 					rx_clk_count = 0;
@@ -74,7 +75,7 @@ module USART_Rx # (
 					data = rx_data;
 					response = 1;
 				end
-				else if(rx_bit_count > DATA_BIT && rx_clk_count == CLKS_FOR_SEND && rx != 1)
+				else if(rx_bit_count > DATA_BITS && rx_clk_count == CLKS_FOR_SEND && rx != 1)
 				begin
 					rx_state = 0;
 					rx_clk_count = 0;

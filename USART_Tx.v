@@ -4,22 +4,23 @@
 module USART_Tx # (
 	parameter CLK_FREQ = 100000000,
 	parameter BAUD_RATE = 115200,
-	parameter DATA_BIT = 8
+	parameter DATA_BITS = 8,
+	parameter STOP_BITS = 1
 	)   (
 	input clk,
 	input reset,
 	output tx,
-	input [7:0] _data,
+	input [DATA_BITS-1:0] _data,
 	input enable,
 	output reg response
 	);
 
 	localparam CLKS_FOR_SEND = CLK_FREQ / BAUD_RATE;
 
-	reg [7:0] data;
-	reg [7:0] tx_data;
-	reg [3:0] tx_bit_count;
-	reg [11:0] tx_clk_count;
+	reg [DATA_BITS-1:0] data;
+	reg [DATA_BITS-1:0] tx_data;
+	reg [$clog2(DATA_BITS):0] tx_bit_count;
+	reg [$clog2(CLKS_FOR_SEND)-1:0] tx_clk_count;
 	reg tx_bit;
 	reg tx_en;
 
@@ -60,9 +61,14 @@ module USART_Tx # (
 						tx_bit = 0;
 						tx_bit_count = 2;
 					end
-					else if (2 <= tx_bit_count && tx_bit_count <= DATA_BIT + 1)
+					else if (2 <= tx_bit_count && tx_bit_count <= DATA_BITS + 1)
 					begin
 						tx_bit = tx_data[tx_bit_count-2];
+						tx_bit_count = tx_bit_count + 1;
+					end
+					else if (DATA_BITS + 2 <= tx_bit_count && tx_bit_count < DATA_BITS + STOP_BITS + 1)
+					begin
+						tx_bit = 1;
 						tx_bit_count = tx_bit_count + 1;
 					end
 					else

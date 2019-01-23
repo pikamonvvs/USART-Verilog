@@ -6,8 +6,10 @@ module USART_Controller_tb (
 	reg reset;
 	wire tx;
 	reg rx;
+	wire tx_response;
+	wire rx_response;
 
-	USART_Controller unit1(clk, reset, tx, rx);
+	USART_Controller unit1(clk, reset, tx, rx, tx_response, rx_response);
 
 	initial
 	begin

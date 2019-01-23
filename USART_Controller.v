@@ -7,7 +7,8 @@
 module USART_Controller # (
 	parameter CLK_FREQ = 100000000,
 	parameter BAUD_RATE = 115200,
-	parameter DATA_BIT = 8
+	parameter DATA_BITS = 8,
+	parameter STOP_BITS = 1
 	)  (
 	input clk,
 	input reset,
@@ -27,7 +28,8 @@ module USART_Controller # (
 	USART_Tx # (
 		.CLK_FREQ(CLK_FREQ),
 		.BAUD_RATE(BAUD_RATE),
-		.DATA_BIT(DATA_BIT)
+		.DATA_BITS(DATA_BITS),
+		.STOP_BITS(STOP_BITS)
 	) _USART_Tx (
 		.clk(clk),
 		.reset(reset),
@@ -40,7 +42,8 @@ module USART_Controller # (
 	USART_Rx # (
 		.CLK_FREQ(CLK_FREQ),
 		.BAUD_RATE(BAUD_RATE),
-		.DATA_BIT(DATA_BIT)
+		.DATA_BITS(DATA_BITS),
+		.STOP_BITS(STOP_BITS)
 	) _USART_Rx (
 		.clk(clk),
 		.reset(reset),
