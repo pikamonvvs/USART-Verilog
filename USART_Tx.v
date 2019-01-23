@@ -31,6 +31,7 @@ module USART_Tx # (
 		tx_clk_count <= 0;
 		tx_bit <= 0;
 		tx_en <= 0;
+		response <= 0;
 	end
 
 	always @ (posedge clk)
@@ -78,7 +79,7 @@ module USART_Tx # (
 		end
 	end
 
-	always @ (posedge clk)
+	always @ (negedge clk)
 	begin
 		if (response)
 		begin

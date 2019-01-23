@@ -37,4 +37,9 @@ module USART_Controller_tb (
 		$finish;
 	end
 
+	always @ (*)
+	begin
+		$monitor("tx = %b", tx);
+	end
+
 endmodule

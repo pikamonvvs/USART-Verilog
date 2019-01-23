@@ -86,7 +86,7 @@ module USART_Rx # (
 		end
 	end
 
-	always @ (posedge clk)
+	always @ (negedge clk)
 	begin
 		if (response)
 		begin
