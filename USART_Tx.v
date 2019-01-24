@@ -46,6 +46,7 @@ module USART_Tx # (
 		end
 		else
 		begin
+			response = 0;
 			if (tx_en != enable)
 			begin
 				if (tx_clk_count == CLKS_FOR_SEND)
@@ -82,14 +83,6 @@ module USART_Tx # (
 				end
 				tx_clk_count = tx_clk_count + 1;
 			end
-		end
-	end
-
-	always @ (negedge clk)
-	begin
-		if (response)
-		begin
-			response = 0;
 		end
 	end
 

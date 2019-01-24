@@ -4,7 +4,7 @@
 module USART_Rx # (
 	parameter CLK_FREQ = 100000000,
 	parameter BAUD_RATE = 115200,
-	parameter DATA_BITS = 8
+	parameter DATA_BITS = 8,
 	parameter STOP_BITS = 1
 	)   (
 	input clk,
@@ -47,6 +47,7 @@ module USART_Rx # (
 		end
 		else
 		begin
+			response = 0;
 			if (rx_state == 0 && rx == 0)
 			begin
 				rx_state = 1;
@@ -84,14 +85,6 @@ module USART_Rx # (
 				end
 				rx_clk_count = rx_clk_count + 1;
 			end
-		end
-	end
-
-	always @ (negedge clk)
-	begin
-		if (response)
-		begin
-			response = 0;
 		end
 	end
 
